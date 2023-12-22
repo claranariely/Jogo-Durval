@@ -8,6 +8,7 @@ public class Movi : MonoBehaviour
     private Rigidbody2D rb;
     private Animator anim;
     private bool isJumping;
+    private bool doubleJump;
     private bool isAttacking;
     public float speed;
     public float jumpForce;
@@ -73,7 +74,16 @@ public class Movi : MonoBehaviour
             {
                 anim.SetInteger("transition", 2);
                 rb.AddForce(new Vector2(0,jumpForce), ForceMode2D.Impulse);
+                doubleJump = true;
                 isJumping = true;
+            }
+            else
+            {
+                if (doubleJump)
+                {
+                    rb.AddForce(new Vector2(0,jumpForce * 2), ForceMode2D.Impulse);
+                    doubleJump = false;
+                }
             }
         }
     }
