@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,17 +11,22 @@ public class Movi : MonoBehaviour
     private bool isAttacking;
     public float speed;
     public float jumpForce;
+    
+    
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        
     }
 
     private void Update()
     {
-        Jump();
+        
         AttackPlayer();
+        Jump();
+        
     }
     
     private void FixedUpdate()
@@ -63,16 +69,23 @@ public class Movi : MonoBehaviour
     {
         if(Input.GetButtonDown("Jump"))
         {
-            if(!isJumping)
+            if (!isJumping)
             {
                 anim.SetInteger("transition", 2);
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                rb.AddForce(new Vector2(0,jumpForce), ForceMode2D.Impulse);
                 isJumping = true;
-           
             }
         }
     }
-    
+
+    private void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.layer == 8)
+        {
+            isJumping = false;
+        }
+    }
+
     void AttackPlayer()
     {
         StartCoroutine("attack");
