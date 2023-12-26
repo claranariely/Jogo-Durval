@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Movi : MonoBehaviour
-{
+{ 
+    [Header ("Movement Variables")]
     private Rigidbody2D rb;
     private Animator anim;
     private bool isJumping;
@@ -13,7 +14,13 @@ public class Movi : MonoBehaviour
     public float speed;
     public float jumpForce;
     
-    
+    [Header ("Attack variables")]
+    public Transform attackCheck;
+    public float radiusAttack;
+    public LayerMask layerEnemy;
+    private float timeNexAttack;
+
+
 
     private void Start()
     {
@@ -101,9 +108,17 @@ public class Movi : MonoBehaviour
         StartCoroutine("attack");
     }
 
+    void Flip()
+    {
+        attackCheck.localPosition = new Vector2(-attackCheck.localPosition.x, attackCheck.localPosition.y);
+    }
+
     IEnumerator attack()
     {
         if (Input.GetKeyDown(KeyCode.E))
+        {
+            //anim.SetTrigger("attack");
+        }
         {
             if (!isAttacking)
             {
@@ -114,5 +129,11 @@ public class Movi : MonoBehaviour
                 isAttacking = false;
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawWireSphere(attackCheck.position, radiusAttack);
     }
 }
